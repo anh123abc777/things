@@ -1,0 +1,22 @@
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  database: things
+  username: postgres
+  password: Haoboy456
+  host: localhost
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+
+development:
+  <<: *default
+  database: things_development
+
+test:
+  <<: *default
+  database: things_test
+
+production:
+  <<: *default
+  database: things_production
