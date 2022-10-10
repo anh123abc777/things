@@ -1,20 +1,27 @@
-import { SHOW_THING, FILTER_THINGS_TO_LABEL, LOAD_THINGS, REFRESH_THINGS, UPDATE_THING, CLOSE_THING, INPUT_TITLE, INPUT_BODY } from "./constants"
+import { SHOW_THING, FILTER_THINGS_TO_LABEL, LOAD_THINGS, REFRESH_THINGS, UPDATE_THING, CLOSE_THING, INPUT_TITLE, INPUT_BODY, CREATE_THING, DELETE_THING, LOAD_LABELS } from "./constants"
 
 const initState = {
     things: [],
+    labels: [],
     selectedThing: {},
     defaultThings: [],
     showThingDetails: false,
     hasUpdate: false
 }
 
-function reducer(state, action){
-    switch(action.type){
-        case LOAD_THINGS: 
+function reducer(state, action) {
+    switch (action.type) {
+        case LOAD_THINGS:
             return {
                 ...state,
                 things: action.payload,
                 defaultThings: action.payload
+            }
+
+        case LOAD_LABELS:
+            return {
+                ...state,
+                labels: action.payload
             }
 
         case FILTER_THINGS_TO_LABEL:
@@ -23,13 +30,13 @@ function reducer(state, action){
                 things: action.payload
             }
 
-        case REFRESH_THINGS: 
+        case REFRESH_THINGS:
             return {
                 ...state,
                 things: state.defaultThings
             }
 
-        case SHOW_THING: 
+        case SHOW_THING:
             return {
                 ...state,
                 selectedThing: action.thing,
@@ -46,29 +53,52 @@ function reducer(state, action){
             return {
                 ...state,
                 hasUpdate: true,
-                selectedThing: {...state.selectedThing, title: action.payload}
+                selectedThing: { ...state.selectedThing, title: action.payload }
             }
-            
+
         case INPUT_BODY:
             return {
                 ...state,
                 hasUpdate: true,
-                selectedThing: {...state.selectedThing, body: action.payload}
+                selectedThing: { ...state.selectedThing, body: action.payload }
             }
 
-        case UPDATE_THING:
+        case UPDATE_THING: {
+            let updatedThings = state.things.map(thing => {
+                return thing.id == action.payload.id ? action.payload : thing
+
+            })
             return {
                 ...state,
-                things: state.things.map(thing => {
-                    return thing.id == action.payload.id ? action.payload : thing
-                    
-                })
+                things: updatedThings,
+                defaultThings: updatedThings
             }
+        }
 
-        default: 
+        case CREATE_THING: {
+            let updatedThings = [...state.things, action.payload]
+            return {
+                ...state,
+                things: updatedThings,
+                defaultThings: updatedThings
+            }
+        }
+
+        case DELETE_THING: {
+            let updatedThings = state.things.filter(thing => {
+                return thing.id != action.payload.id
+            })
+            return {
+                ...state,
+                things: updatedThings,
+                defaultThings: updatedThings
+            }
+        }
+
+        default:
             throw new Error(`Invalid action ${action.type}`)
     }
 }
 
-export {initState}
+export { initState }
 export default reducer

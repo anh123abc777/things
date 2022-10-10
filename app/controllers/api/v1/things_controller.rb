@@ -23,7 +23,7 @@ class Api::V1::ThingsController < ApplicationController
     @thing = Thing.new(thing_params)
 
     if @thing.save
-      render json: @thing, status: :created, location: @thing
+      render json: @thing.to_json(include: :labels), status: :created
     else
       render json: @thing.errors, status: :unprocessable_entity
     end

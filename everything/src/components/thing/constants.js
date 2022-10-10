@@ -1,4 +1,5 @@
 export const LOAD_THINGS = "load_things"
+export const LOAD_LABELS = "load_labels"
 export const FILTER_THINGS_TO_LABEL = "filter_things_to_label"
 export const REFRESH_THINGS = "refresh_things"
 export const SHOW_THING = "show_thing"
