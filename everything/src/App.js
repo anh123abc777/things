@@ -36,11 +36,11 @@ function App() {
     axios.get("http://localhost:3000/api/v1/labels").then((response) => response.data).then((items) => {  
         setLabels(items);
       });
-      setIsUpdateLabel(false);
+      setIsUpdateLabel(false);  
   },[isUpdateLabel]);
 
   useEffect(() =>{
-    handleRefresh();
+    handleRefresh();  
     // if(selectedLabel==null){
     //   handleRefresh();
     // }else {
