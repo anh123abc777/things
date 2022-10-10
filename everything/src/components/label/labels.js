@@ -8,7 +8,6 @@ import NewLabel from "./newlabel";
 const Labels = (props) => {
 
     const [state, dispatch] = useThing();
-    const {things, selectedThing, todo} = state;
   
 
     const [selectedLabel, selectLabel] = useState();
@@ -43,9 +42,9 @@ const Labels = (props) => {
             {props.labels.map((label) => {
                 const stateCheck = (selectedLabel == label.name) ? "bg-light" : ""
                 return(
-                    <div >
+                    <div key={label.id} >
                         <div  className={`list-group-item list-group-item-action justify-content-between d-flex  ${stateCheck} `} >
-                            <a key={label.id} className="text-decoration-none text-dark " onClick={() => dispatch(actions.filterThingsToLabel(label.things))}>
+                            <a className="text-decoration-none text-dark " onClick={() => dispatch(actions.filterThingsToLabel(label.things))}>
                                 {label.name}
                             </a>
                             <button className="btn" onClick={() => handelRemoveLabel(label)}><FontAwesomeIcon icon={faRemove}/></button>

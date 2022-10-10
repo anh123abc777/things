@@ -2,7 +2,7 @@ import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useThing } from '../thing';
+import { actions, useThing } from '../thing';
 
 const DropdownLabel = (props) => {
 
@@ -12,12 +12,12 @@ const DropdownLabel = (props) => {
     const { selectedThing, labels } = state;
 
     useEffect(() => {
-        if (props.thing.labels != null) {
-            setCheckedIds(props.thing.labels.map(label => {
+        if (selectedThing.labels != null) {
+            setCheckedIds(selectedThing.labels.map(label => {
                 return label.id;
             }))
         }
-    }, [props.thing])
+    }, [])
 
     useEffect(() => {
         if (checkedIds != null && isClick != null) {
@@ -37,13 +37,16 @@ const DropdownLabel = (props) => {
         const listId = {
             list_id: checkedIds
         }
-        axios.put(`http://localhost:3000/api/v1/things/${props.thing.id}/labels`, listId).then((response) => response.data);
-        props.setIsUpdateLabel(true);
+        axios.put(`http://localhost:3000/api/v1/things/${selectedThing.id}/labels`, listId).then((response) => {
+            console.log(checkedIds);
+            dispatch(actions.updateThing(response.data));
+            dispatch(actions.updateThingOfLabel({labelIds: checkedIds, thing: selectedThing}));
+        });
     }
 
 
     const isChecked = (label) => {
-        const labelsOfThing = props.thing.labels;
+        const labelsOfThing = selectedThing.labels;
         if (labelsOfThing != null) {
             return labelsOfThing.some(labelThing => {
                 return labelThing.id == label.id

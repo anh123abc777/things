@@ -1,4 +1,4 @@
-import { SHOW_THING, FILTER_THINGS_TO_LABEL, LOAD_THINGS, REFRESH_THINGS, UPDATE_THING, CLOSE_THING, INPUT_TITLE, INPUT_BODY, CREATE_THING, DELETE_THING, LOAD_LABELS } from "./constants";
+import { SHOW_THING, FILTER_THINGS_TO_LABEL, LOAD_THINGS, REFRESH_THINGS, UPDATE_THING, CLOSE_THING, INPUT_TITLE, INPUT_BODY, CREATE_THING, DELETE_THING, LOAD_LABELS, UPDATE_THING_OF_LABEL } from "./constants";
 
 export const loadThing = payload => ({
     type: LOAD_THINGS,
@@ -50,5 +50,10 @@ export const createThing = payload => ({
 
 export const deleteThing = payload => ({
     type: DELETE_THING,
+    payload
+})
+
+export const updateThingOfLabel = payload => ({
+    type: UPDATE_THING_OF_LABEL,
     payload
 })

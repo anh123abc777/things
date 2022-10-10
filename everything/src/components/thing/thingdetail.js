@@ -16,11 +16,13 @@ function ThingDetail(props) {
   const { selectedThing, hasUpdate } = state
 
   const handleHideModal = () => {
-    if (selectedThing?.id && hasUpdate) {
-      handleUpdateThing();
-    } else {
-      handleCreateThing();
-    }
+    if (hasUpdate) {
+      if (selectedThing?.id !=  null){
+        handleUpdateThing();
+      }else{
+        handleCreateThing();
+      }
+    }    
     props.onHide(selectedThing);
   }
 
@@ -42,7 +44,6 @@ function ThingDetail(props) {
       }).then(response => {
         dispatch(actions.createThing(response.data));
       });
-
     }
   }
 
@@ -87,7 +88,7 @@ function ThingDetail(props) {
               <Dropdown.Toggle variant="" aria-expanded="true" id="dropdown-basic">
                 <FontAwesomeIcon icon={faTag} />
               </Dropdown.Toggle>
-              <DropdownLabel labels={props.labels} setIsUpdateLabel={props.setIsUpdateLabel} thing={selectedThing}></DropdownLabel>
+              <DropdownLabel setIsUpdateLabel={props.setIsUpdateLabel}></DropdownLabel>
             </Dropdown>
           </div>
         }

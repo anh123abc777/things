@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useThing } from './hooks';
 import { actions } from '.';
 
-function Things(props) {
+function Things() {
 
     const [state, dispatch] = useThing();
     const {things} = state
@@ -18,6 +18,7 @@ function Things(props) {
                         xs={2} 
                         key={thing.id}
                         className='py-1'
+                        id={thing.id}
                     >
                         <div className='card p-2'>
                             <h2>{thing.title}</h2>
