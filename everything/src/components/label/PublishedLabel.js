@@ -10,10 +10,10 @@ const PublishedLabel = (props) => {
         <div className={`list-group-item list-group-item-action  ${props.defaultState}`}>
             <FontAwesomeIcon className="me-3" icon={faLightbulb}/>
             <a className="stretched-link text-decoration-none text-dark" onClick={() => dispatch(actions.refreshThings())}>
-                <span>Thinssgs</span>
+                <span>Things</span>
             </a>
         </div>
     )
 }
 
-export default PublishedLabel;
+export default PublishedLabel;  

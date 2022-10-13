@@ -37,8 +37,7 @@ const Labels = (props) => {
             {labels.map((label) => {
                 const stateCheck = (selectedLabel == label.name) ? "bg-light" : ""
                 return(
-                    <div key={label.id} >
-                        <div  className={`list-group-item list-group-item-action justify-content-between d-flex  ${stateCheck} `} >
+                        <div key={label.id} className={`list-group-item list-group-item-action justify-content-between d-flex  ${stateCheck} `} >
                             <div>
                                 <FontAwesomeIcon className="me-3" icon={faTShirt}/>
                                 <a className="text-decoration-none text-dark " onClick={() => dispatch(actions.filterThingsToLabel(label.things))}>
@@ -46,9 +45,7 @@ const Labels = (props) => {
                                 </a>
                             </div>
                             <button className="btn" onClick={() => handelRemoveLabel(label)}><FontAwesomeIcon icon={faRemove}/></button>
-
                         </div>
-                    </div>
                 );
             })}
             <ArchivedLabel></ArchivedLabel>
