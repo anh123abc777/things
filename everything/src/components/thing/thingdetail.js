@@ -4,16 +4,32 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTag } from '@fortawesome/free-solid-svg-icons';
 import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownLabel from '../label/dropdownlabel';
+import DropdownLabel from '../label/DropdownLabel';
 import { useThing } from './hooks';
 import { actions } from '.';
 import { THINGS_URL, THING_URL } from './thingUrl';
+import Images from './pics/Images';
 
 
 function ThingDetail(props) {
 
   const [state, dispatch] = useThing();
   const { selectedThing, hasUpdate } = state
+  const [images, setImages] = useState([])
+
+  useEffect(() => {
+    if(selectedThing){
+      setImages(selectedThing.images_url);
+    }
+  },[selectedThing]);
+
+  useEffect(() => {
+    return () =>{
+      images && images.map((image, i) =>{
+        URL.revokeObjectURL(image);
+      })
+    }
+  },[images]);
 
   const handleHideModal = () => {
     if (hasUpdate) {
@@ -26,34 +42,46 @@ function ThingDetail(props) {
     props.onHide(selectedThing);
   }
 
-
   const handleCreateThing = () => {
-    const isEmpty = selectedThing.title.trim() == "" && selectedThing.body.trim() == ""
-    if (!isEmpty) {
-      const newThing = {
-        title: selectedThing.title,
-        body: selectedThing.body
-      }
+    if (!isEmpty( )) {
+      const formData = new FormData();
+      formData.append('thing[title]',selectedThing.title)
+      formData.append('thing[body]',selectedThing.body)
+      images.map(image => {
+        formData.append('thing[images][]',image)
+      })
+  
       axios({
         method: 'post',
         url: THINGS_URL,
-        data: newThing,
-        validateStatus: (status) => {
-          return true;
-        },
+        data: formData,
       }).then(response => {
         dispatch(actions.createThing(response.data));
+        return response.json
       });
     }
   }
 
+  const isEmpty = () => {
+    return selectedThing.title.trim() == "" && selectedThing.body.trim() == "" && images == null;
+  }
+
   const handleUpdateThing = () => {
-    const newThing = {
-      title: selectedThing.title,
-      body: selectedThing.body
-    }
-    dispatch(actions.updateThing(selectedThing));
-    return axios.put(THING_URL(selectedThing.id), newThing).then((response) => response.data);
+    const formData = new FormData();
+    formData.append('thing[title]',selectedThing.title)
+    formData.append('thing[body]',selectedThing.body)
+    images.map(image => {
+      if(image?.preview){
+        formData.append('images',image)
+      }
+    })
+    axios({
+      method: 'PATCH',
+      url: THING_URL(selectedThing.id),
+      data: formData
+    }).then((response) => {
+      dispatch(actions.updateThing(response.data));
+    });
   }
 
   const handleDeleteThing = () => {
@@ -62,6 +90,16 @@ function ThingDetail(props) {
     props.onHide();
   }
 
+  const handlePreviewImages = (e) => {
+    const file = e.target.files[0];
+    file.preview = URL.createObjectURL(file);
+    dispatch(actions.editThing());
+    if(images){
+      setImages([...images,file]);
+    }else{
+        setImages([file]);
+      }
+  }
 
   return (
     <Modal
@@ -71,7 +109,9 @@ function ThingDetail(props) {
       centered
       onHide={handleHideModal}
     >
+      <Images images={images}></Images>
       <Modal.Header>
+      
         <input className="col-12 no-border" id="contained-modal-title-vcenter" placeholder='Title' value={selectedThing.title}
           onChange={e => dispatch(actions.inputTitle(e.target.value))}
         />
@@ -79,6 +119,8 @@ function ThingDetail(props) {
       <Modal.Body className='body-text'>
         <textarea className="col-12 no-border none-resize" placeholder='Take a note..' value={selectedThing.body}
           onChange={e => dispatch(actions.inputBody(e.target.value))} />
+            
+        <input type="file" name="image" id="image" onChange={(e) => handlePreviewImages(e)}/>
 
         {selectedThing?.id &&
           <div className="d-flex align-items-center justify-content-end">

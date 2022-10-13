@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     end
   end
   get "/api/v1/create/thing", to: "api/v1/things#new"
+  get "/api/v1/archived/things", to: "api/v1/things#archived"
   put "/api/v1/things/:id/labels", to: "api/v1/things#labelToThing"
     # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

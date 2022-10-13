@@ -1,5 +1,4 @@
-import Labels from "./label/labels";
-import NewLabel from "./label/newlabel";
+import Labels from "./label/Labels";
 
 function Sidebar(props){
 

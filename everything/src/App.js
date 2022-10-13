@@ -1,15 +1,15 @@
 import './App.css';
-import Things from './components/thing/things';
 import axios from "axios";
-import { useEffect, useState, useCallback, useContext } from 'react';
+import { useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Newthing from './components/thing/newthing';
-import ThingDetail from './components/thing/thingdetail';
+import Newthing from './components/thing/NewThing';
+import ThingDetail from './components/thing/ThingDetail';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
-import Sidebar from './components/sidebar';
+import Sidebar from './components/Sidebar';
 import { actions, useThing } from './components/thing';
+import Things from './components/thing/Things';
 
 library.add(fas, far)
 
@@ -19,7 +19,7 @@ const API_URL = "http://localhost:3000/api/v1/things/";
 function App() {
 
   const [state, dispatch] = useThing();
-  const { things, selectedThing, showThingDetails, isUpdateLabel } = state;
+  const { things, showThingDetails, isUpdateLabel } = state;
   const [labels, setLabels] = useState([]);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { SHOW_THING, FILTER_THINGS_TO_LABEL, LOAD_THINGS, REFRESH_THINGS, UPDATE_THING, CLOSE_THING, INPUT_TITLE, INPUT_BODY, CREATE_THING, DELETE_THING, LOAD_LABELS, UPDATE_THING_OF_LABEL } from "./constants"
+import { SHOW_THING, FILTER_THINGS_TO_LABEL, LOAD_THINGS, REFRESH_THINGS, UPDATE_THING, CLOSE_THING, INPUT_TITLE, INPUT_BODY, CREATE_THING, DELETE_THING, LOAD_LABELS, UPDATE_THING_OF_LABEL, LOAD_ARCHIVED_THINGS, EDIT_THING, ADD_LABEL, DELETE_LABEL } from "./constants"
 
 const initState = {
     things: [],
@@ -96,7 +96,8 @@ function reducer(state, action) {
                 things: updatedThings,
                 defaultThings: updatedThings,
                 labels: state.labels.map(label => {
-                    return label.things.filter(thing => thing.id != action.payload.id)
+                    label.things.filter(thing => thing.id != action.payload.id)
+                    return label
                 })
             }
         }
@@ -106,6 +107,34 @@ function reducer(state, action) {
             return {
                 ...state,
                 isUpdateLabel: true
+            }
+        }
+
+        case LOAD_ARCHIVED_THINGS: {
+            return {
+                ...state,
+                things: action.payload
+            }
+        }
+
+        case EDIT_THING: {
+            return {
+                ...state,
+                hasUpdate: true
+            }
+        }
+
+        case ADD_LABEL: {
+            return {
+                ...state,
+                labels: [action.payload, ...state.labels]
+            }
+        }
+
+        case DELETE_LABEL: {
+            return {
+                ...state,
+                labels: state.labels.filter(label => label.id != action.payload.id)
             }
         }
 

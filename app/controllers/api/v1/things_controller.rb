@@ -3,14 +3,24 @@ class Api::V1::ThingsController < ApplicationController
 
   # GET /things
   def index
-    @things = Thing.all.order('created_at')
-   
+    @things = Thing.status_published.order('created_at')
+    things = []
+    @things.each do |thing|
+      things.push(ThingSerializer.new(thing).serializable_hash[:data][:attributes])
+    end
+    render json: things
+  end
+
+  # GET /archived/things
+  def archived
+    @things = Thing.status_archived.order('created_at')
+
     render json: @things.to_json(include: :labels)
   end
 
   # GET /things/1
   def show
-    render json: @thing.to_json(include: :labels)
+    render json: ThingSerializer.new(@thing).serializable_hash[:data][:attributes]
   end
 
   def new
@@ -21,18 +31,20 @@ class Api::V1::ThingsController < ApplicationController
   # POST /things
   def create
     @thing = Thing.new(thing_params)
-
+    @thing.status_published!
     if @thing.save
-      render json: @thing.to_json(include: :labels), status: :created
+      render json: ThingSerializer.new(@thing).serializable_hash[:data][:attributes], status: :created
     else
       render json: @thing.errors, status: :unprocessable_entity
     end
+
   end
 
   # PATCH/PUT /things/1
   def update
     if @thing.update(thing_params)
-      render json: @thing
+      @thing.images.attach(params[:images]) 
+      render json: ThingSerializer.new(@thing).serializable_hash[:data][:attributes]
     else
       render json: @thing.errors, status: :unprocessable_entity
     end
@@ -40,7 +52,7 @@ class Api::V1::ThingsController < ApplicationController
 
   # DELETE /things/1
   def destroy
-    @thing.destroy
+    @thing.status_trash!
   end
 
   def labelToThing
@@ -55,6 +67,6 @@ class Api::V1::ThingsController < ApplicationController
     end
 
     def thing_params
-      params.require(:thing).permit(:title, :body)
+      params.require(:thing).permit(:title, :body, images: [])
     end
 end
