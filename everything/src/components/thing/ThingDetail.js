@@ -9,6 +9,7 @@ import { useThing } from './hooks';
 import { actions } from '.';
 import { THINGS_URL, THING_URL } from './thingUrl';
 import Images from './pics/Images';
+import DropdownFeature from './DropdownFeature';
 
 
 function ThingDetail(props) {
@@ -47,14 +48,17 @@ function ThingDetail(props) {
       const formData = new FormData();
       formData.append('thing[title]',selectedThing.title)
       formData.append('thing[body]',selectedThing.body)
-      images.map(image => {
-        formData.append('thing[images][]',image)
-      })
+      if(images){
+        images.map(image => {
+          formData.append('thing[images][]',image)
+        })
+      }
   
       axios({
         method: 'post',
         url: THINGS_URL,
         data: formData,
+        validateStatus: false,
       }).then(response => {
         dispatch(actions.createThing(response.data));
         return response.json
@@ -70,11 +74,13 @@ function ThingDetail(props) {
     const formData = new FormData();
     formData.append('thing[title]',selectedThing.title)
     formData.append('thing[body]',selectedThing.body)
-    images.map(image => {
-      if(image?.preview){
-        formData.append('images',image)
-      }
-    })
+    if(images){
+      images.map(image => {
+        if(image?.preview){
+          formData.append('images',image)
+        }
+      })
+    }
     axios({
       method: 'PATCH',
       url: THING_URL(selectedThing.id),
@@ -127,11 +133,15 @@ function ThingDetail(props) {
             <button className="btn" onClick={e => handleDeleteThing()}><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
 
             <Dropdown>
-              <Dropdown.Toggle variant="" aria-expanded="true" id="dropdown-basic">
+              <Dropdown.Toggle variant="" aria-expanded="true" id="dropdown-basic" className='caret-off'>
                 <FontAwesomeIcon icon={faTag} />
               </Dropdown.Toggle>
               <DropdownLabel setIsUpdateLabel={props.setIsUpdateLabel}></DropdownLabel>
             </Dropdown>
+
+            <DropdownFeature>
+              
+            </DropdownFeature>
           </div>
         }
       </Modal.Body>

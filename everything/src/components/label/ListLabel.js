@@ -7,7 +7,7 @@ import ArchivedLabel from "./ArchivedLabel";
 import NewLabel from "./NewLabel";
 import PublishedLabel from "./PublishedLabel";
 
-const Labels = (props) => {
+const ListLabel = (props) => {
 
     const [state, dispatch] = useThing();
     const {labels} = state
@@ -53,4 +53,4 @@ const Labels = (props) => {
     )
 }
 
-export default Labels;
+export default ListLabel;

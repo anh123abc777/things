@@ -38,8 +38,7 @@ const DropdownLabel = (props) => {
             list_id: checkedIds
         }
         axios.put(`http://localhost:3000/api/v1/things/${selectedThing.id}/labels`, listId).then((response) => {
-            console.log(checkedIds);
-            dispatch(actions.updateThing(response.data));
+            dispatch(actions.editThing());
             dispatch(actions.updateThingOfLabel({labelIds: checkedIds, thing: selectedThing}));
         });
     }

@@ -15,4 +15,5 @@ class Thing < ApplicationRecord
         image_urls   
      end
 
+
 end

@@ -7,7 +7,7 @@ import ThingDetail from './components/thing/ThingDetail';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
-import Sidebar from './components/Sidebar';
+import Leftbar from './components/Leftbar';
 import { actions, useThing } from './components/thing';
 import Things from './components/thing/Things';
 
@@ -55,7 +55,7 @@ function App() {
 
   return (
     <div className="wrapper">
-      <Sidebar isActive={isActive} labels={labels} setLabels={setLabels}></Sidebar>
+      <Leftbar isActive={isActive} labels={labels} setLabels={setLabels}></Leftbar>
       <div className="content col">
         <nav>
           <button type="button" id="sidebarCollapse" onClick={e => handleCollapseSidebar()} className="btn">

@@ -1,4 +1,4 @@
-import { SHOW_THING, FILTER_THINGS_TO_LABEL, LOAD_THINGS, REFRESH_THINGS, UPDATE_THING, CLOSE_THING, INPUT_TITLE, INPUT_BODY, CREATE_THING, DELETE_THING, LOAD_LABELS, UPDATE_THING_OF_LABEL, LOAD_ARCHIVED_THINGS, EDIT_THING, ADD_LABEL, DELETE_LABEL } from "./constants"
+import { SHOW_THING, FILTER_THINGS_TO_LABEL, LOAD_THINGS, REFRESH_THINGS, UPDATE_THING, CLOSE_THING, INPUT_TITLE, INPUT_BODY, CREATE_THING, DELETE_THING, LOAD_LABELS, UPDATE_THING_OF_LABEL, LOAD_ARCHIVED_THINGS, EDIT_THING, ADD_LABEL, DELETE_LABEL, UPDATE_LABEL, ARCHIVE_THING } from "./constants"
 
 const initState = {
     things: [],
@@ -66,7 +66,7 @@ function reducer(state, action) {
             }
 
         case UPDATE_THING: {
-            let updatedThings = state.things.map(thing => {
+            let updatedThings = state.defaultThings.map(thing => {
                 return thing.id == action.payload.id ? action.payload : thing
 
             })
@@ -79,11 +79,10 @@ function reducer(state, action) {
         }
 
         case CREATE_THING: {
-            let updatedThings = [...state.things, action.payload]
             return {
                 ...state,
-                things: updatedThings,
-                defaultThings: updatedThings
+                things:  [...state.things, action.payload],
+                defaultThings:  [...state.defaultThings, action.payload]
             }
         }
 
@@ -135,6 +134,29 @@ function reducer(state, action) {
             return {
                 ...state,
                 labels: state.labels.filter(label => label.id != action.payload.id)
+            }
+        }
+
+        case UPDATE_LABEL: {
+            return {
+
+            }
+        }
+
+        case ARCHIVE_THING: {
+            console.log(action.payload.id);
+            return {
+                ...state,
+                defaultThings:  state.defaultThings.filter(thing => {
+                    return thing.id != action.payload.id
+                }),
+                things:  state.things.filter(thing => {
+                    return thing.id != action.payload.id
+                }),
+                labels: state.labels.map(label => {
+                    label.things.filter(thing => thing.id != action.payload.id)
+                    return label
+                })
             }
         }
 

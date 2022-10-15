@@ -2,8 +2,9 @@ class Api::V1::LabelsController < ApplicationController
     before_action :set_label, only: %i[ show update destroy ]
     
     def index
-        @labels = Label.all.order('created_at DESC')
-        render json: @labels.to_json(include: {things: { include: :labels}})
+        @labels = Label.all.order('created_at')
+
+        render json: @labels    
     end
 
     def show

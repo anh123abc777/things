@@ -1,4 +1,4 @@
-import { SHOW_THING, FILTER_THINGS_TO_LABEL, LOAD_THINGS, REFRESH_THINGS, UPDATE_THING, CLOSE_THING, INPUT_TITLE, INPUT_BODY, CREATE_THING, DELETE_THING, LOAD_LABELS, UPDATE_THING_OF_LABEL, LOAD_ARCHIVED_THINGS, EDIT_THING, ADD_LABEL, DELETE_LABEL } from "./constants";
+import { SHOW_THING, FILTER_THINGS_TO_LABEL, LOAD_THINGS, REFRESH_THINGS, UPDATE_THING, CLOSE_THING, INPUT_TITLE, INPUT_BODY, CREATE_THING, DELETE_THING, LOAD_LABELS, UPDATE_THING_OF_LABEL, LOAD_ARCHIVED_THINGS, EDIT_THING, ADD_LABEL, DELETE_LABEL, UPDATE_LABEL, ARCHIVE_THING } from "./constants";
 
 export const loadThing = payload => ({
     type: LOAD_THINGS,
@@ -74,5 +74,15 @@ export const addLabel = payload => ({
 
 export const deleteLabel = payload => ({
     type: DELETE_LABEL,
+    payload
+})
+
+export const updateLabel = payload => ({
+    type: UPDATE_LABEL,
+    payload
+})
+
+export const archiveThing = payload => ({
+    type: ARCHIVE_THING,
     payload
 })

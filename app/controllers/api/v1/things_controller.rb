@@ -1,26 +1,32 @@
 class Api::V1::ThingsController < ApplicationController
-  before_action :set_thing, only: %i[ show update destroy labelToThing]
+  before_action :set_thing, only: %i[ show update destroy labelToThing archive]
 
   # GET /things
   def index
     @things = Thing.status_published.order('created_at')
-    things = []
-    @things.each do |thing|
-      things.push(ThingSerializer.new(thing).serializable_hash[:data][:attributes])
-    end
-    render json: things
+    # things = []
+    # @things.each do |thing|
+    #   things.push(ThingSerializer.new(thing).serializable_hash[:data][:attributes])
+    # end
+    render json: @things
   end
 
   # GET /archived/things
   def archived
     @things = Thing.status_archived.order('created_at')
 
-    render json: @things.to_json(include: :labels)
+    render json: @things
+  end
+
+  def archive
+    @thing.status_archived!
+    
+    render json: @thing
   end
 
   # GET /things/1
   def show
-    render json: ThingSerializer.new(@thing).serializable_hash[:data][:attributes]
+    render json: @thing
   end
 
   def new
@@ -33,7 +39,7 @@ class Api::V1::ThingsController < ApplicationController
     @thing = Thing.new(thing_params)
     @thing.status_published!
     if @thing.save
-      render json: ThingSerializer.new(@thing).serializable_hash[:data][:attributes], status: :created
+      render json: @thing, status: :created
     else
       render json: @thing.errors, status: :unprocessable_entity
     end
@@ -44,7 +50,7 @@ class Api::V1::ThingsController < ApplicationController
   def update
     if @thing.update(thing_params)
       @thing.images.attach(params[:images]) 
-      render json: ThingSerializer.new(@thing).serializable_hash[:data][:attributes]
+      render json: @thing
     else
       render json: @thing.errors, status: :unprocessable_entity
     end

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get "/api/v1/create/thing", to: "api/v1/things#new"
   get "/api/v1/archived/things", to: "api/v1/things#archived"
   put "/api/v1/things/:id/labels", to: "api/v1/things#labelToThing"
+  put "/api/v1/things/:id/archive", to: "api/v1/things#archive"
     # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
