@@ -1,81 +1,40 @@
-import './App.css';
-import axios from "axios";
-import { useEffect, useState} from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Newthing from './components/thing/NewThing';
-import ThingDetail from './components/thing/ThingDetail';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fas } from '@fortawesome/free-solid-svg-icons'
-import { far } from '@fortawesome/free-regular-svg-icons'
-import Leftbar from './components/Leftbar';
-import { actions, useThing } from './components/thing';
-import Things from './components/thing/Things';
-
-library.add(fas, far)
-
-
-const API_URL = "http://localhost:3000/api/v1/things/";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { publicRoutes } from '~/routes';
+import { DefaultLayout } from '~/components/Layout';
+import { Fragment } from 'react';
 
 function App() {
+    return (
+        <Router>
+            <div className="App">
+                <Routes>
+                    {publicRoutes.map((route, index) => {
+                        const Page = route.component;
 
-  const [state, dispatch] = useThing();
-  const { things, showThingDetails, isUpdateLabel } = state;
-  const [labels, setLabels] = useState([]);
+                        let Layout = DefaultLayout;
 
-  useEffect(() => {
-    if(isUpdateLabel){
-      handleLoadLabels()
-    }
-  }, [isUpdateLabel]);
+                        if (route.layout === null){
+                            Layout = Fragment
+                        }else if (route.layout){
+                            Layout = route.layout
+                        }
 
-  useEffect(() => {
-    handleLoadLabels()
-    handleRefresh();
-  }, []);
-
-  const handleLoadLabels = () => {
-    axios.get("http://localhost:3000/api/v1/labels").then((response) => response.data).then((items) => {
-      setLabels(items);
-      dispatch(actions.loadLabels(items))
-    });
-  }
-
-  const handleRefresh = () => {
-    axios.get(API_URL).then((response) => response.data).then((items) => {
-      dispatch(actions.loadThing(items));
-    });
-  }
-
-  const [isActive, setActive] = useState(false);
-
-  const handleCollapseSidebar = () => {
-    setActive(!isActive);
-  }
-
-
-  return (
-    <div className="wrapper">
-      <Leftbar isActive={isActive} labels={labels} setLabels={setLabels}></Leftbar>
-      <div className="content col">
-        <nav>
-          <button type="button" id="sidebarCollapse" onClick={e => handleCollapseSidebar()} className="btn">
-            <i className="fa fa-align-justify"></i>
-          </button>
-
-        </nav>
-        <div className="content-wrapper">
-          <Newthing></Newthing>
-          <div className='p-3'>
-            <Things things={things} />
-          </div>
-          {showThingDetails && <ThingDetail
-            show={showThingDetails}
-            onHide={() => { dispatch(actions.closeThing()) }}
-          />}
-        </div>
-      </div>
-    </div>
-  );
+                        return (
+                            <Route
+                                key={index}
+                                path={route.path}
+                                element={
+                                    <Layout>
+                                        <Page />
+                                    </Layout>
+                                }
+                            />
+                        );
+                    })}
+                </Routes>
+            </div>
+        </Router>
+    );
 }
 
 export default App;
