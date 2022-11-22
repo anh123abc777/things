@@ -6,17 +6,17 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 import { ThingProvider } from './components/thing';
-import GlobelStyles from '~/components/GlobalStyles'
+import GlobelStyles from '~/components/GlobalStyles';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <ThingProvider>
-      <GlobelStyles>
-        <App />
-      </GlobelStyles>
-    </ThingProvider>
-  </React.StrictMode>
+    <React.StrictMode>
+        <GlobelStyles>
+            <ThingProvider>
+                <App />
+            </ThingProvider>
+        </GlobelStyles>
+    </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function

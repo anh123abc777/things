@@ -1,0 +1,32 @@
+.container {
+    column-count: 1;
+    column-gap: 20px;
+    column-fill: balance;
+    margin: 20px auto 0;
+    padding: 2rem;
+}
+.container .item {
+    margin: 0 0 20px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    width: 100%;
+}
+.container .item .item-context {
+    width: 100%;
+    height: auto;
+}
+@media (min-width: 600px) {
+    .container {
+        column-count: 2;
+    }
+}
+@media (min-width: 900px) {
+    .container {
+        column-count: 3;
+    }
+}
+@media (min-width: 1200px) {
+    .container {
+        column-count: 4;
+    }
+}

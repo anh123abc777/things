@@ -1,14 +1,37 @@
-import { SHOW_THING, FILTER_THINGS_TO_LABEL, LOAD_THINGS, REFRESH_THINGS, UPDATE_THING, CLOSE_THING, INPUT_TITLE, INPUT_BODY, CREATE_THING, DELETE_THING, LOAD_LABELS, UPDATE_THING_OF_LABEL, LOAD_ARCHIVED_THINGS, EDIT_THING, ADD_LABEL, DELETE_LABEL, UPDATE_LABEL, ARCHIVE_THING } from "./constants"
+import {
+    SHOW_THING,
+    FILTER_THINGS_TO_LABEL,
+    LOAD_THINGS,
+    REFRESH_THINGS,
+    UPDATE_THING,
+    CLOSE_THING,
+    INPUT_TITLE,
+    INPUT_BODY,
+    CREATE_THING,
+    DELETE_THING,
+    LOAD_LABELS,
+    UPDATE_THING_OF_LABEL,
+    LOAD_ARCHIVED_THINGS,
+    EDIT_THING,
+    ADD_LABEL,
+    DELETE_LABEL,
+    UPDATE_LABEL,
+    ARCHIVE_THING,
+    SEARCH_THINGS,
+    BEFORE_DETELE_THING,
+    UNDO_DELETE_THING,
+} from './constants';
 
 const initState = {
     things: [],
     labels: [],
     selectedThing: {},
     defaultThings: [],
+    backupThings: [],
     showThingDetails: false,
     hasUpdate: false,
-    isUpdateLabel: false
-}
+    isUpdateLabel: false,
+};
 
 function reducer(state, action) {
     switch (action.type) {
@@ -16,154 +39,199 @@ function reducer(state, action) {
             return {
                 ...state,
                 things: action.payload,
-                defaultThings: action.payload
-            }
+                defaultThings: action.payload,
+                backupThings: action.payload,
+            };
 
         case LOAD_LABELS:
             return {
                 ...state,
-                labels: action.payload
-            }
+                labels: action.payload,
+            };
 
         case FILTER_THINGS_TO_LABEL:
             return {
                 ...state,
-                things: action.payload
-            }
+                things: action.payload,
+                backupThings: action.payload,
+            };
 
         case REFRESH_THINGS:
             return {
                 ...state,
-                things: state.defaultThings
-            }
+                things: state.defaultThings,
+                backupThings: state.defaultThings,
+            };
 
         case SHOW_THING:
             return {
                 ...state,
                 selectedThing: action.thing,
-                showThingDetails: true
-            }
+                showThingDetails: true,
+            };
 
         case CLOSE_THING:
             return {
                 ...state,
                 showThingDetails: false,
-                selectedThing: {}
-            }
+                selectedThing: {},
+            };
 
         case INPUT_TITLE:
             return {
                 ...state,
                 hasUpdate: true,
-                selectedThing: { ...state.selectedThing, title: action.payload }
-            }
+                selectedThing: { ...state.selectedThing, title: action.payload },
+            };
 
         case INPUT_BODY:
             return {
                 ...state,
                 hasUpdate: true,
-                selectedThing: { ...state.selectedThing, body: action.payload }
-            }
+                selectedThing: { ...state.selectedThing, body: action.payload },
+            };
 
         case UPDATE_THING: {
-            let updatedThings = state.defaultThings.map(thing => {
-                return thing.id == action.payload.id ? action.payload : thing
+            let labelIds = action.payload.labels.map((label) => label.id);
+            let updatedLabels = state.labels.map((label) => {
+                if (labelIds.includes(label.id)) {
+                    label.things = [...label.things, action.payload];
+                    label.things = [...new Set(label.things)];
+                } else {
+                    label.things = label.things.filter((thing) => thing.id !== action.payload.id);
+                }
+                return label;
+            });
 
-            })
+            let updatedThings = state.defaultThings.map((thing) => {
+                return thing.id == action.payload.id ? action.payload : thing;
+            });
+
+            console.log(updatedLabels);
             return {
                 ...state,
                 things: updatedThings,
+                backupThings: updatedThings,
+                labels: updatedLabels,
                 defaultThings: updatedThings,
-                selectedThing: action.payload
-            }
+                selectedThing: action.payload,
+            };
         }
 
         case CREATE_THING: {
             return {
                 ...state,
-                things:  [...state.things, action.payload],
-                defaultThings:  [...state.defaultThings, action.payload]
-            }
+                backupThings: [...state.backupThings, action.payload],
+                things: [...state.things, action.payload],
+                defaultThings: [...state.defaultThings, action.payload],
+            };
         }
 
         case DELETE_THING: {
-            let updatedThings = state.things.filter(thing => {
-                return thing.id != action.payload.id
-            })
+            let updatedDefaultThings = state.defaultThings.filter((thing) => {
+                return thing.id != action.payload.id;
+            });
+            return {
+                ...state,
+                backupThings: state.things,
+                defaultThings: updatedDefaultThings,
+                labels: state.labels.map((label) => {
+                    label.things.filter((thing) => thing.id != action.payload.id);
+                    return label;
+                }),
+            };
+        }
+
+        case BEFORE_DETELE_THING: {
+            let updatedThings = state.things.filter((thing) => {
+                return thing.id != action.payload.id;
+            });
             return {
                 ...state,
                 things: updatedThings,
-                defaultThings: updatedThings,
-                labels: state.labels.map(label => {
-                    label.things.filter(thing => thing.id != action.payload.id)
-                    return label
-                })
-            }
+            };
+        }
+
+        case UNDO_DELETE_THING: {
+            return {
+                ...state,
+                things: state.backupThings,
+            };
         }
 
         case UPDATE_THING_OF_LABEL: {
-            let c = state.count;
             return {
                 ...state,
-                isUpdateLabel: true
-            }
+                isUpdateLabel: true,
+            };
         }
 
         case LOAD_ARCHIVED_THINGS: {
             return {
                 ...state,
-                things: action.payload
-            }
+                things: action.payload,
+            };
         }
 
         case EDIT_THING: {
             return {
                 ...state,
-                hasUpdate: true
-            }
+                hasUpdate: true,
+            };
         }
 
         case ADD_LABEL: {
             return {
                 ...state,
-                labels: [action.payload, ...state.labels]
-            }
+                labels: [action.payload, ...state.labels],
+            };
         }
 
         case DELETE_LABEL: {
             return {
                 ...state,
-                labels: state.labels.filter(label => label.id != action.payload.id)
-            }
+                labels: state.labels.filter((label) => label.id != action.payload.id),
+            };
         }
 
         case UPDATE_LABEL: {
-            return {
-
-            }
+            return {};
         }
 
         case ARCHIVE_THING: {
-            console.log(action.payload.id);
             return {
                 ...state,
-                defaultThings:  state.defaultThings.filter(thing => {
-                    return thing.id != action.payload.id
+                defaultThings: state.defaultThings.filter((thing) => {
+                    return thing.id != action.payload.id;
                 }),
-                things:  state.things.filter(thing => {
-                    return thing.id != action.payload.id
+                things: state.things.filter((thing) => {
+                    return thing.id != action.payload.id;
                 }),
-                labels: state.labels.map(label => {
-                    label.things.filter(thing => thing.id != action.payload.id)
-                    return label
-                })
-            }
+                backupThings: state.backupThings.filter((thing) => {
+                    return thing.id != action.payload.id;
+                }),
+                labels: state.labels.map((label) => {
+                    label.things.filter((thing) => thing.id != action.payload.id);
+                    return label;
+                }),
+            };
+        }
+
+        case SEARCH_THINGS: {
+            return {
+                ...state,
+                things: state.backupThings.filter((thing) => {
+                    return (
+                        !action.payload || thing.title.includes(action.payload) || thing.body.includes(action.payload)
+                    );
+                }),
+            };
         }
 
         default:
-            throw new Error(`Invalid action ${action.type}`)
+            throw new Error(`Invalid action ${action.type}`);
     }
 }
 
-export { initState }
-export default reducer
+export { initState };
+export default reducer;

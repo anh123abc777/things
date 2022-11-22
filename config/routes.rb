@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      resources :things
+      resources :things do
+        member do
+          delete :delete_image_attachment
+        end
+      end
       resources :labels
     end
   end

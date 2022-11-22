@@ -5,7 +5,6 @@ import axios from 'axios';
 import { actions, useThing } from '../thing';
 
 const DropdownLabel = (props) => {
-
     const [checkedIds, setCheckedIds] = useState(null);
     const [isClick, setIsClick] = useState(null);
     const [state, dispatch] = useThing();
@@ -13,11 +12,13 @@ const DropdownLabel = (props) => {
 
     useEffect(() => {
         if (selectedThing.labels != null) {
-            setCheckedIds(selectedThing.labels.map(label => {
-                return label.id;
-            }))
+            setCheckedIds(
+                selectedThing.labels.map((label) => {
+                    return label.id;
+                }),
+            );
         }
-    }, [])
+    }, []);
 
     useEffect(() => {
         if (checkedIds != null && isClick != null) {
@@ -27,49 +28,49 @@ const DropdownLabel = (props) => {
 
     const handleCheck = (id) => {
         setIsClick(true);
-        setCheckedIds(prev => {
-            const isChecked = checkedIds.includes(id)
-            return isChecked ? checkedIds.filter(item => item !== id) : [...prev, id]
-        })
-    }
+        setCheckedIds((prev) => {
+            const isChecked = checkedIds.includes(id);
+            return isChecked ? checkedIds.filter((item) => item !== id) : [...prev, id];
+        });
+    };
 
     const updateLabel = () => {
         const listId = {
-            list_id: checkedIds
-        }
+            list_id: checkedIds,
+        };
         axios.put(`http://localhost:3000/api/v1/things/${selectedThing.id}/labels`, listId).then((response) => {
             dispatch(actions.editThing());
-            dispatch(actions.updateThingOfLabel({labelIds: checkedIds, thing: selectedThing}));
+            dispatch(actions.updateThingOfLabel({ labelIds: checkedIds, thing: selectedThing }));
         });
-    }
-
+    };
 
     const isChecked = (label) => {
         const labelsOfThing = selectedThing.labels;
         if (labelsOfThing != null) {
-            return labelsOfThing.some(labelThing => {
-                return labelThing.id == label.id
-            })
+            return labelsOfThing.some((labelThing) => {
+                return labelThing.id == label.id;
+            });
         }
         return false;
-    }
+    };
 
     return (
-        <Dropdown.Menu className='p-3'>
-
-            {labels.map(label => {
+        <Dropdown.Menu className="p-3">
+            {labels.map((label) => {
                 return (
-                    <Form.Check className='py-1'
+                    <Form.Check
+                        className="py-1"
+                        key={label.id}
                         type="checkbox"
                         label={label.name}
                         id={label.id}
                         onChange={() => handleCheck(label.id)}
                         defaultChecked={isChecked(label)}
                     />
-                )
+                );
             })}
         </Dropdown.Menu>
-    )
-}
+    );
+};
 
 export default DropdownLabel;

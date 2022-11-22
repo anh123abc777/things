@@ -1,47 +1,73 @@
-import React, { useEffect, useState } from 'react'
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import React, { useEffect, useState } from 'react';
 import { useThing } from './hooks';
 import { actions } from '.';
 import Images from './pics/Images';
+import Link from '@mui/joy/Link';
+import {
+    Box,
+    Card,
+    CardActionArea,
+    Container,
+    ImageList,
+    ImageListItem,
+    ImageListItemBar,
+    TextareaAutosize,
+} from '@mui/material';
+import styles from './Things.module.scss';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(styles);
 
 function Things() {
-
     const [state, dispatch] = useThing();
-    const {things} = state
+    const { things } = state;
 
     return (
-    <div className='list-thing'>   
-        <Row className='card-body'>
-            {things.map((thing) => {
-                return (
-                    <Col 
-                        xs={2} 
-                        key={thing.id}
-                        className='py-1'
-                        id={thing.id}
-                    >
-                        <div className='card'>
-                            <Images images={thing.images_url} limit={1}></Images>
-                            <div className=' p-2'>
-                                <h2>{thing.title}</h2>
-                                <p>{thing.body}</p>
-                                <div>
-                                    {thing.labels.map((label) => {
-                                        return (
-                                                <span className='label-card p-1'>{label.name}</span>
-                                        )
-                                    })}
+        <Box>
+            <Box className={cx('container')}>
+                {things.map((thing) => (
+                    <div className={cx('item')} key={thing.id}>
+                        <Card
+                            variant="outlined"
+                            sx={{
+                                borderRadius: '8px',
+                            }}
+                            className={cx('item-context')}
+                        >
+                            <CardActionArea>
+                                <Images images={thing.images_url} limit={1}></Images>
+                                <div className="p-2">
+                                    <h2>{thing.title}</h2>
+                                    <TextareaAutosize
+                                        className="no-border none-resize match-parent"
+                                        maxRows={4}
+                                        defaultValue={thing.body}
+                                    ></TextareaAutosize>
+                                    <div>
+                                        {thing.labels.map((label) => {
+                                            return (
+                                                <span className="label-card p-1" key={label.id}>
+                                                    {label.name}
+                                                </span>
+                                            );
+                                        })}
+                                    </div>
+                                    <Link
+                                        overlay
+                                        href="#with-card"
+                                        textColor="inherit"
+                                        underline="none"
+                                        fontWeight="md"
+                                        onClick={() => dispatch(actions.showThing(thing))}
+                                    />
                                 </div>
-                                <a className="stretched-link" onClick={() => dispatch(actions.showThing(thing))}></a>
-                            </div>
-                        </div>
-                    </Col>
-                );
-            })}
-        </Row>
-    </div>
-  );
+                            </CardActionArea>
+                        </Card>
+                    </div>
+                ))}
+            </Box>
+        </Box>
+    );
 }
 
-export default Things
+export default Things;

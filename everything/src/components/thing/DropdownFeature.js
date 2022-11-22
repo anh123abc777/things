@@ -6,29 +6,31 @@ import Form from 'react-bootstrap/Form';
 import { actions } from '.';
 import { useThing } from './hooks';
 import { getApiArchiveThingURL } from './thingUrl';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const DropdownFeature = () => {
-
-    const [state, dispatch] = useThing()
-    const { selectedThing } = state
+    const [state, dispatch] = useThing();
+    const { selectedThing } = state;
 
     const handleArchiveThing = () => {
-        axios.put(getApiArchiveThingURL(selectedThing.id)).then(response => {
-            dispatch(actions.archiveThing(selectedThing))
-            dispatch(actions.closeThing())
-        })
-    }
+        axios.put(getApiArchiveThingURL(selectedThing.id)).then((response) => {
+            dispatch(actions.archiveThing(selectedThing));
+            dispatch(actions.closeThing());
+        });
+    };
 
     return (
         <Dropdown>
-            <Dropdown.Toggle variant="" aria-expanded="true" id="dropdown-feature" className='caret-off'>
-            <FontAwesomeIcon icon={faTable} />
+            <Dropdown.Toggle variant="" aria-expanded="true" id="dropdown-feature" className="caret-off">
+                <MoreVertIcon fontSize="large" />
             </Dropdown.Toggle>
-            <Dropdown.Menu className='p-3'>
-                <a className='cursor-pointer text-decoration-none text-dark' onClick={() => handleArchiveThing()}>Archive</a>
+            <Dropdown.Menu className="p-3">
+                <a className="cursor-pointer text-decoration-none text-dark" onClick={() => handleArchiveThing()}>
+                    Archive
+                </a>
             </Dropdown.Menu>
-      </Dropdown>
-    )
-}
+        </Dropdown>
+    );
+};
 
 export default DropdownFeature;

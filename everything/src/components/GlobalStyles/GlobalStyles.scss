@@ -1,18 +1,18 @@
 @import 'normalize.css';
 
-:root{
-
+:root {
+    --default-layout-header-height: 60px;
 }
 
-*{
+* {
     box-sizing: border-box;
 }
 
-html{
+html {
     font-size: 62.5%;
 }
 
-body{
+body {
     font-size: 1.6rem;
     line-height: 1.5;
     text-rendering: optimizeSpeed;
@@ -22,195 +22,201 @@ body{
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+    height: 40vmin;
+    pointer-events: none;
+}
+
+.match-parent {
+    width: 100%;
+}
+
+.dark-color {
+    color: black !important;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-.body-text{
-  display: inline-block;
+.body-text {
+    display: inline-block;
 }
 
 .no-border {
-  border: 0 !important;
-  box-shadow: none;
+    border: 0 !important;
+    box-shadow: none;
 }
 
-.none-resize{
-  resize: none;
-  overflow:hidden;
-  width: auto;
+.none-resize {
+    resize: none;
+    overflow: hidden;
 }
 
-.no-border:focus{
-  border: none !important;
-  outline:none !important;
+.no-border:focus {
+    border: none !important;
+    outline: none !important;
 }
 
-.list-thing .card{
-  cursor: pointer;
-  overflow-wrap: break-word;
-
+.list-thing .card {
+    cursor: pointer;
+    overflow-wrap: break-word;
 }
 
-#additional-thing, #additional-label{
-  cursor: text;
+#additional-thing,
+#additional-label {
+    cursor: text;
 }
 
-.card{
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+.card {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 }
 
-@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
-body{
-  font-family: 'Poppins', sans-serif;
-}
- 
-.navbar{
-  padding:15px 10px;
-  border-radius: 0;
-  margin-bottom: 40px;
-  box-shadow: 1px 1px 3px rgba(0,0,0,0.1)
-}
-.navbar-btn{
-  box-shadow: none;
-  outline:none !important;
-  border:none
-}
-.line{
-  width:100%;
-  height:1px;
-}
-.wrapper{
-  display: flex;
-  width:100%;
-  align-items:stretch;
-
-}
-#sidebar{
-  min-width:250px;
-  max-width: 250px;
-  height: 100vh;
-  transition: all 0.3s;
-  box-shadow: 1px 1px 3px rgba(0,0,0,0.1)
-
-}
-#sidebar.active{
-  margin-left:-250px;
-
-}
-#sidebar .sidebar-header{
-  padding:20px;
-}
-#sidebar ul p{
-  padding:10px;
-  font-size:15px;
-  display: block;
-}
-#sidebar ul li a{
-  padding:10px;
-  font-size: 1.1em;
-  display: block
-}
-#sidebar ul li a:hover{
-  background: #318fb5
-}
-#sidebar ul li.active>a, a[aria-expanded="true"]{
-  background: #318fb5
-}
-a[data-toggle="collapse"]{
-  position: relative
-}
-.dropdown-toggle::after{
-  display: block;
-  position: absolute;
-  top:50%;
-  right:20px;
-  transform: translateY(-50%)
-}
-ul ul a{
-  font-size:0.9em !important;
-  padding-left: 30px !important;
-}
-ul.CTAs{
-  padding:20px
-}
-ul.CTAs a{
-  text-align: center;
-  font-size:0.9em !important;
-  display: block;
-  border-radius: 5px;
-  margin-bottom:5px
-}
-a.download, a.download:hover{
-  background:#318fb5;
-}
-#content{
-  width:100%;
-  padding:20px;
-  min-height: 100vh;
-  transition: all 0.3s
-}
-.content-wrapper{
-  padding:15px
-}
-@media(maz-width:768px){
-  #sidebar{
-    margin-left:-250px
-  }
-  #sidebar.active{
-    margin-left:0px
-  }
-  #sidebarCollapse span{
-    display: none;
-  }
+@import 'https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700';
+body {
+    font-family: 'Poppins', sans-serif;
 }
 
-.list-group-item-action{
-  cursor: pointer;
+.navbar {
+    padding: 15px 10px;
+    border-radius: 0;
+    margin-bottom: 40px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+.navbar-btn {
+    box-shadow: none;
+    outline: none !important;
+    border: none;
+}
+.line {
+    width: 100%;
+    height: 1px;
+}
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    height: 100vh;
+    transition: all 0.3s;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+#sidebar.active {
+    margin-left: -250px;
+}
+#sidebar .sidebar-header {
+    padding: 20px;
+}
+#sidebar ul p {
+    padding: 10px;
+    font-size: 15px;
+    display: block;
+}
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+}
+#sidebar ul li a:hover {
+    background: #318fb5;
+}
+#sidebar ul li.active > a,
+a[aria-expanded='true'] {
+    background: #318fb5;
+}
+a[data-toggle='collapse'] {
+    position: relative;
+}
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+}
+ul.CTAs {
+    padding: 20px;
+}
+ul.CTAs a {
+    text-align: center;
+    font-size: 0.9em !important;
+    display: block;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+a.download,
+a.download:hover {
+    background: #318fb5;
+}
+#content {
+    width: 100%;
+    padding: 20px;
+    min-height: 100vh;
+    transition: all 0.3s;
+}
+.content-wrapper {
+    padding: 15px;
+}
+@media (maz-width: 768px) {
+    #sidebar {
+        margin-left: -250px;
+    }
+    #sidebar.active {
+        margin-left: 0px;
+    }
+    #sidebarCollapse span {
+        display: none;
+    }
 }
 
-.label-card{
-  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
-  border-radius: 10px;
+.list-group-item-action {
+    cursor: pointer;
+}
+
+.label-card {
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    border-radius: 10px;
 }
 
 .caret-off::before {
-  display: none !important;
+    display: none !important;
 }
 .caret-off::after {
-  display: none !important;
+    display: none !important;
 }
 
 .cursor-pointer {
-  cursor: pointer;
+    cursor: pointer;
 }

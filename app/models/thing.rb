@@ -10,10 +10,12 @@ class Thing < ApplicationRecord
         return unless self.images.attachments
         image_urls = self.images.map do |image| 
          
-            url_for(image)
+            { id: image.id, iamge_url: url_for(image)}
         end
         image_urls   
-     end
+    end
+
+ 
 
 
 end

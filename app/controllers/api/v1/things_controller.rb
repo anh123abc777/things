@@ -49,7 +49,7 @@ class Api::V1::ThingsController < ApplicationController
   # PATCH/PUT /things/1
   def update
     if @thing.update(thing_params)
-      @thing.images.attach(params[:images]) 
+      @thing.images.attach(params[:images])
       render json: @thing
     else
       render json: @thing.errors, status: :unprocessable_entity
@@ -58,13 +58,18 @@ class Api::V1::ThingsController < ApplicationController
 
   # DELETE /things/1
   def destroy
-    @thing.status_trash!
+    @thing.status_trashed!
   end
 
   def labelToThing
     @labels = Label.find(params[:list_id])
     @thing.labels = @labels
     render json: @thing.to_json(include: :labels)
+  end
+
+  def delete_image_attachment
+    @image = ActiveStorage::Attachment.find(params[:id])
+    @image.purge
   end
 
   private
