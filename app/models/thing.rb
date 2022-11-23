@@ -1,4 +1,5 @@
 class Thing < ApplicationRecord
+    after_create :add_position
     include Rails.application.routes.url_helpers
 
     has_many_attached :images
@@ -15,7 +16,9 @@ class Thing < ApplicationRecord
         image_urls   
     end
 
- 
-
+    private
+        def add_position
+            self.position = self.id
+        end
 
 end

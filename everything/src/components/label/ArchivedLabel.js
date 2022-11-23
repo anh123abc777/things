@@ -8,6 +8,7 @@ import ArchiveIcon from '@mui/icons-material/Archive';
 
 const ArchivedLabel = (props) => {
     const [state, dispatch] = useThing();
+    const { selectedLabel } = state;
 
     const handleShowArchivedThings = () => {
         loadArchivedThings();
@@ -15,17 +16,16 @@ const ArchivedLabel = (props) => {
 
     const loadArchivedThings = () => {
         axios.get(ARCHIVED_THINGS_URL).then((response) => {
-            dispatch(actions.loadArchivedThings(response.data));
+            dispatch(actions.filterThingsToLabel({ label: 'archivedLabel', things: response.data }));
         });
     };
 
     return (
         <ListItem key="archivedLabel" disablePadding>
             <ListItemButton
-                selected={props.selectedIndex === 'archivedLabel'}
+                selected={selectedLabel === 'archivedLabel'}
                 onClick={() => {
                     handleShowArchivedThings();
-                    props.onListItemClick('archivedLabel');
                 }}
             >
                 <ListItemIcon>

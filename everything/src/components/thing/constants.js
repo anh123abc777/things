@@ -19,3 +19,5 @@ export const DELETE_LABEL = 'delete_label';
 export const UPDATE_LABEL = 'update_label';
 export const ARCHIVE_THING = 'archive_thing';
 export const SEARCH_THINGS = 'search_things';
+export const UPDATE_THINGS = 'update_things';
+export const SHOW_SIDEBAR = 'show_sidebar';

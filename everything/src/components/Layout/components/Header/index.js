@@ -21,6 +21,7 @@ const Header = () => {
             .get(API_URL)
             .then((response) => response.data)
             .then((items) => {
+                dispatch(actions.filterThingsToLabel({ label: 'publishedLabel' }));
                 dispatch(actions.loadThing(items));
             });
     };
@@ -30,10 +31,14 @@ const Header = () => {
         dispatch(actions.searchThings(e.target.value));
     };
 
+    const handleShowSidebar = () => {
+        dispatch(actions.showSidebar());
+    };
+
     return (
         <Grid container className={cx('wrapper')}>
             <Grid item xs={2} className={cx('inner')}>
-                <IconButton className="dark-color">
+                <IconButton className="dark-color" onClick={handleShowSidebar}>
                     <MenuIcon fontSize="large" />
                 </IconButton>
                 <CardActionArea
@@ -53,7 +58,11 @@ const Header = () => {
                         textColor="inherit"
                         underline="none"
                         fontWeight="md"
-                        onClick={() => dispatch(actions.refreshThings())}
+                        onClick={() => {
+                            dispatch(actions.filterThingsToLabel({ label: 'publishedLabel' }));
+
+                            dispatch(actions.refreshThings());
+                        }}
                     />
                 </CardActionArea>
             </Grid>

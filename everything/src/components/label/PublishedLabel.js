@@ -6,14 +6,15 @@ import { ListItem, ListItemButton, ListItemIcon } from '@mui/material';
 
 const PublishedLabel = (props) => {
     const [state, dispatch] = useThing();
+    const { selectedLabel } = state;
 
     return (
         <ListItem key="publishedLabel" disablePadding>
             <ListItemButton
-                selected={props.selectedIndex === 'publishedLabel'}
+                selected={selectedLabel === 'publishedLabel'}
                 onClick={(e) => {
+                    dispatch(actions.filterThingsToLabel({ label: 'publishedLabel' }));
                     dispatch(actions.refreshThings());
-                    props.onListItemClick('publishedLabel');
                 }}
             >
                 <ListItemIcon>

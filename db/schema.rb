@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_12_022931) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_22_065348) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -68,6 +68,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_12_022931) do
     t.datetime "updated_at", null: false
     t.boolean "pinned"
     t.enum "status", enum_type: "thing_status"
+    t.integer "position"
     t.index ["status"], name: "index_things_on_status"
   end
 

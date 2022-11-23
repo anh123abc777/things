@@ -3,7 +3,7 @@ class Api::V1::ThingsController < ApplicationController
 
   # GET /things
   def index
-    @things = Thing.status_published.order('created_at')
+    @things = Thing.status_published.order('position')
     # things = []
     # @things.each do |thing|
     #   things.push(ThingSerializer.new(thing).serializable_hash[:data][:attributes])

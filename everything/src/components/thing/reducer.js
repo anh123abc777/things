@@ -20,17 +20,21 @@ import {
     SEARCH_THINGS,
     BEFORE_DETELE_THING,
     UNDO_DELETE_THING,
+    UPDATE_THINGS,
+    SHOW_SIDEBAR,
 } from './constants';
 
 const initState = {
     things: [],
     labels: [],
     selectedThing: {},
+    selectedLabel: 'publishedLabel',
     defaultThings: [],
     backupThings: [],
     showThingDetails: false,
     hasUpdate: false,
     isUpdateLabel: false,
+    isShowSidebar: true,
 };
 
 function reducer(state, action) {
@@ -52,8 +56,9 @@ function reducer(state, action) {
         case FILTER_THINGS_TO_LABEL:
             return {
                 ...state,
-                things: action.payload,
-                backupThings: action.payload,
+                things: action.payload?.things,
+                selectedLabel: action.payload.label,
+                backupThings: action.payload?.things,
             };
 
         case REFRESH_THINGS:
@@ -225,6 +230,22 @@ function reducer(state, action) {
                         !action.payload || thing.title.includes(action.payload) || thing.body.includes(action.payload)
                     );
                 }),
+            };
+        }
+
+        case UPDATE_THINGS: {
+            return {
+                ...state,
+                things: action.payload.things,
+                backupThings: action.payload.things,
+                defaultThings: action.payload.defaultThings,
+            };
+        }
+
+        case SHOW_SIDEBAR: {
+            return {
+                ...state,
+                isShowSidebar: !state.isShowSidebar,
             };
         }
 

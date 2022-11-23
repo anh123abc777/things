@@ -23,14 +23,7 @@ import { pink } from '@mui/material/colors';
 
 const ListLabel = (props) => {
     const [state, dispatch] = useThing();
-    const { labels } = state;
-    const [selectedLabel, selectLabel] = useState();
-    const [selectedIndex, setSelectedIndex] = useState();
-
-    const handleSelectLabel = (label) => {
-        selectLabel(label ? label.name : null);
-        props.onShowThingsOfLabel(label);
-    };
+    const { labels, selectedLabel } = state;
 
     const handelAddNewLabel = (isAddNew) => {
         props.setIsUpdateLabel(isAddNew);
@@ -41,15 +34,11 @@ const ListLabel = (props) => {
         dispatch(actions.deleteLabel(labelNeedRemove));
     };
 
-    const handleListItemClick = (index) => {
-        setSelectedIndex(index);
-    };
-
     return (
         <div className="list-group list-group-flush">
             <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                 <NewLabel onAddNewLabel={handelAddNewLabel}></NewLabel>
-                <PublishedLabel selectedIndex={selectedIndex} onListItemClick={handleListItemClick}></PublishedLabel>
+                <PublishedLabel></PublishedLabel>
                 {labels.map((label) => {
                     const labelId = `checkbox-list-secondary-label-${label.id}`;
                     return (
@@ -60,13 +49,12 @@ const ListLabel = (props) => {
                                     <RemoveCircleOutlineIcon fontSize="large" sx={{ color: pink[500] }} />
                                 </IconButton>
                             }
-                            selected={selectedIndex === label.id}
+                            selected={selectedLabel === label.id}
                             disablePadding
                         >
                             <ListItemButton
                                 onClick={() => {
-                                    dispatch(actions.filterThingsToLabel(label.things));
-                                    handleListItemClick(label.id);
+                                    dispatch(actions.filterThingsToLabel({ label: label.id, things: label.things }));
                                 }}
                             >
                                 <ListItemIcon>
@@ -77,7 +65,7 @@ const ListLabel = (props) => {
                         </ListItem>
                     );
                 })}
-                <ArchivedLabel selectedIndex={selectedIndex} onListItemClick={handleListItemClick}></ArchivedLabel>
+                <ArchivedLabel></ArchivedLabel>
             </List>
         </div>
     );

@@ -20,6 +20,8 @@ import {
     SEARCH_THINGS,
     BEFORE_DETELE_THING,
     UNDO_DELETE_THING,
+    UPDATE_THINGS,
+    SHOW_SIDEBAR,
 } from './constants';
 
 export const loadThing = (payload) => ({
@@ -121,4 +123,13 @@ export const archiveThing = (payload) => ({
 export const searchThings = (payload) => ({
     type: SEARCH_THINGS,
     payload,
+});
+
+export const updateThings = (payload) => ({
+    type: UPDATE_THINGS,
+    payload,
+});
+
+export const showSidebar = () => ({
+    type: SHOW_SIDEBAR,
 });
