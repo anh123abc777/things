@@ -1,13 +1,8 @@
-import { faLadderWater, faRemove, faTShirt } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-import { memo, useEffect, useState } from 'react';
-import { actions, useThing } from '../thing';
 import ArchivedLabel from './ArchivedLabel';
 import NewLabel from './NewLabel';
 import PublishedLabel from './PublishedLabel';
 import LabelIcon from '@mui/icons-material/Label';
-import Link from '@mui/joy/Link';
 import {
     Card,
     CardActionArea,
@@ -20,6 +15,7 @@ import {
 } from '@mui/material';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { pink } from '@mui/material/colors';
+import { useThing, actions } from '~/hooks';
 
 const ListLabel = (props) => {
     const [state, dispatch] = useThing();

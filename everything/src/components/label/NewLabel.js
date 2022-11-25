@@ -2,7 +2,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
-import { actions, useThing } from '../thing';
+import { actions, useThing } from '~/hooks';
 import { Box, ListItem, ListItemButton, ListItemIcon, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 

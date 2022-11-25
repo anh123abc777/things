@@ -2,7 +2,7 @@ import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { actions, useThing } from '../thing';
+import { useThing, actions } from '~/hooks';
 
 const DropdownLabel = (props) => {
     const [checkedIds, setCheckedIds] = useState(null);

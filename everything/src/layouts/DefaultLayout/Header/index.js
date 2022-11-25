@@ -5,7 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AcUnitSharpIcon from '@mui/icons-material/AcUnitSharp';
 import ReplayIcon from '@mui/icons-material/Replay';
-import { actions, useThing } from '~/components/thing';
+import { actions, useThing } from '~/hooks';
 import axios from 'axios';
 import { useState } from 'react';
 import Link from '@mui/joy/Link';

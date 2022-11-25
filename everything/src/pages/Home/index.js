@@ -4,11 +4,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
-import NewThing from '~/components/thing/NewThing';
-import ThingDetail from '~/components/thing/ThingDetail';
-import Leftbar from '~/components/Leftbar';
-import { actions, useThing } from '~/components/thing';
-import Things from '~/components/thing/Things';
+import NewThing from '~/components/NewThing';
+import ThingDetails from '~/components/ThingDetails';
+import { actions, useThing } from '~/hooks';
+import Things from '~/components/Things';
 import CustomSnackbar from '~/components/CustomSnackbar';
 import { THING_URL } from '~/components/thing/thingUrl';
 
@@ -19,14 +18,7 @@ const API_URL = 'http://localhost:3000/api/v1/things/';
 function Home() {
     const [state, dispatch] = useThing();
     const { things, showThingDetails, isUpdateLabel } = state;
-    const [labels, setLabels] = useState([]);
     const [open, setOpen] = useState({ isShow: false, message: '', thing: {} });
-
-    useEffect(() => {
-        if (isUpdateLabel) {
-            handleLoadLabels();
-        }
-    }, [isUpdateLabel]);
 
     useEffect(() => {
         handleLoadLabels();
@@ -38,7 +30,6 @@ function Home() {
             .get('http://localhost:3000/api/v1/labels')
             .then((response) => response.data)
             .then((items) => {
-                setLabels(items);
                 dispatch(actions.loadLabels(items));
             });
     };
@@ -87,7 +78,7 @@ function Home() {
                         <Things things={things} />
                     </div>
                     {showThingDetails && (
-                        <ThingDetail
+                        <ThingDetails
                             show={showThingDetails}
                             onHide={(thing) => {
                                 dispatch(actions.closeThing());

@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import ListLabel from '~/components/label/ListLabel';
 import classNames from 'classnames/bind';
 import styles from './Sidebar.module.scss';
-import { useThing } from '~/components/thing';
+import { useThing } from '~/hooks';
 import { Fragment } from 'react';
 
 const cx = classNames.bind(styles);

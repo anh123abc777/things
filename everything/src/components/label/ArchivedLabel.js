@@ -1,10 +1,8 @@
-import { faArchive } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ListItem, ListItemButton, ListItemIcon } from '@mui/material';
 import axios from 'axios';
-import { actions, useThing } from '../thing';
 import { ARCHIVED_THINGS_URL } from '../thing/thingUrl';
 import ArchiveIcon from '@mui/icons-material/Archive';
+import { actions, useThing } from '~/hooks';
 
 const ArchivedLabel = (props) => {
     const [state, dispatch] = useThing();

@@ -1,6 +1,6 @@
 import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { actions, useThing } from '../thing';
+import { actions, useThing } from '~/hooks';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import { ListItem, ListItemButton, ListItemIcon } from '@mui/material';
 
