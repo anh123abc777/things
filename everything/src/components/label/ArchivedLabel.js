@@ -1,8 +1,7 @@
 import { ListItem, ListItemButton, ListItemIcon } from '@mui/material';
-import axios from 'axios';
-import { ARCHIVED_THINGS_URL } from '../thing/thingUrl';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import { actions, useThing } from '~/hooks';
+import * as thingServices from '~/services/thingServices';
 
 const ArchivedLabel = (props) => {
     const [state, dispatch] = useThing();
@@ -12,10 +11,9 @@ const ArchivedLabel = (props) => {
         loadArchivedThings();
     };
 
-    const loadArchivedThings = () => {
-        axios.get(ARCHIVED_THINGS_URL).then((response) => {
-            dispatch(actions.filterThingsToLabel({ label: 'archivedLabel', things: response.data }));
-        });
+    const loadArchivedThings = async () => {
+        const res = await thingServices.getArchivedThings();
+        dispatch(actions.filterThingsToLabel({ label: 'archivedLabel', things: res }));
     };
 
     return (

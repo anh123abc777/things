@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -9,7 +8,8 @@ import ThingDetails from '~/components/ThingDetails';
 import { actions, useThing } from '~/hooks';
 import Things from '~/components/Things';
 import CustomSnackbar from '~/components/CustomSnackbar';
-import { THING_URL } from '~/components/thing/thingUrl';
+import * as thingServices from '~/services/thingServices';
+import * as labelServices from '~/services/labelServices';
 
 library.add(fas, far);
 
@@ -25,28 +25,14 @@ function Home() {
         handleLoadThings();
     }, []);
 
-    const handleLoadLabels = () => {
-        axios
-            .get('http://localhost:3000/api/v1/labels')
-            .then((response) => response.data)
-            .then((items) => {
-                dispatch(actions.loadLabels(items));
-            });
+    const handleLoadLabels = async () => {
+        const res = await labelServices.getAll();
+        dispatch(actions.loadLabels(res));
     };
 
-    const handleLoadThings = () => {
-        axios
-            .get(API_URL)
-            .then((response) => response.data)
-            .then((items) => {
-                dispatch(actions.loadThing(items));
-            });
-    };
-
-    const [isActive, setActive] = useState(false);
-
-    const handleCollapseSidebar = () => {
-        setActive(!isActive);
+    const handleLoadThings = async () => {
+        const rs = await thingServices.getAll();
+        dispatch(actions.loadThing(rs));
     };
 
     const showSnackbar = (message, thing) => {
@@ -62,14 +48,12 @@ function Home() {
     };
 
     const handleDelete = () => {
-        // console.log(open.thing.id);
-        axios.delete(THING_URL(open.thing.id));
+        thingServices.remove(open.thing.id);
         dispatch(actions.deleteThing(open.thing));
     };
 
     return (
         <div className="wrapper">
-            {/* <Leftbar isActive={isActive} labels={labels} setLabels={setLabels}></Leftbar> */}
             <div className="content-wrapper col">
                 <nav></nav>
                 <div className="content">

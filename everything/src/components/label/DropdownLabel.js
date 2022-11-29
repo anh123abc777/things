@@ -1,8 +1,8 @@
 import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useThing, actions } from '~/hooks';
+import * as thingServices from '~/services/thingServices';
 
 const DropdownLabel = (props) => {
     const [checkedIds, setCheckedIds] = useState(null);
@@ -34,14 +34,13 @@ const DropdownLabel = (props) => {
         });
     };
 
-    const updateLabel = () => {
+    const updateLabel = async () => {
         const listId = {
             list_id: checkedIds,
         };
-        axios.put(`http://localhost:3000/api/v1/things/${selectedThing.id}/labels`, listId).then((response) => {
-            dispatch(actions.editThing());
-            dispatch(actions.updateThingOfLabel({ labelIds: checkedIds, thing: selectedThing }));
-        });
+        await thingServices.labelThing(selectedThing.id, listId);
+        dispatch(actions.editThing());
+        dispatch(actions.updateThingOfLabel({ labelIds: checkedIds, thing: selectedThing }));
     };
 
     const isChecked = (label) => {

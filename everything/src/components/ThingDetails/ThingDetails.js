@@ -1,18 +1,17 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Modal from 'react-bootstrap/Modal';
-import axios from 'axios';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownLabel from '../label/DropdownLabel';
 import { useThing } from '~/hooks';
 import { actions } from '~/hooks';
-import { THINGS_URL, THING_URL } from '~/components/thing/thingUrl';
-import Images from '../Images/Images';
+import ListImages from '~/components/ListImages';
 import DropdownFeature from './DropdownFeature';
-import { Button, IconButton, TextareaAutosize } from '@mui/material';
+import { IconButton, TextareaAutosize } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { pink } from '@mui/material/colors';
 import TurnedInIcon from '@mui/icons-material/TurnedIn';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import * as thingServices from '~/services/thingServices';
 
 function ThingDetails(props) {
     const [state, dispatch] = useThing();
@@ -46,34 +45,23 @@ function ThingDetails(props) {
         props.onHide();
     };
 
-    const handleCreateThing = () => {
-        if (!isEmpty()) {
+    const handleCreateThing = async () => {
+        if (selectedThing.title && selectedThing.body && images) {
             const formData = new FormData();
             formData.append('thing[title]', selectedThing.title);
             formData.append('thing[body]', selectedThing.body);
-            if (images) {
+            if (!!images) {
                 images.map((image) => {
                     formData.append('thing[images][]', image);
                 });
             }
 
-            axios({
-                method: 'post',
-                url: THINGS_URL,
-                data: formData,
-                validateStatus: false,
-            }).then((response) => {
-                dispatch(actions.createThing(response.data));
-                return response.json;
-            });
+            const res = await thingServices.create(formData);
+            dispatch(actions.createThing(res));
         }
     };
 
-    const isEmpty = () => {
-        return selectedThing.title.trim() == '' && selectedThing.body.trim() == '' && images == null;
-    };
-
-    const handleUpdateThing = () => {
+    const handleUpdateThing = async () => {
         const formData = new FormData();
         formData.append('thing[title]', selectedThing.title);
         formData.append('thing[body]', selectedThing.body);
@@ -84,13 +72,9 @@ function ThingDetails(props) {
                 }
             });
         }
-        axios({
-            method: 'PATCH',
-            url: THING_URL(selectedThing.id),
-            data: formData,
-        }).then((response) => {
-            dispatch(actions.updateThing(response.data));
-        });
+
+        const res = await thingServices.update(selectedThing.id, formData);
+        dispatch(actions.updateThing(res));
     };
 
     const handleDeleteThing = () => {
@@ -108,18 +92,17 @@ function ThingDetails(props) {
         }
     };
 
-    const handleRemoveImage = (image) => {
-        console.log(image);
+    const handleRemoveImage = useCallback((image) => {
         if (image?.id) {
-            axios.delete(`http://localhost:3000/api/v1/things/${image.id}/delete_image_attachment`);
+            thingServices.removeImages(image.id);
         }
         setImages(images.filter((el) => el !== image));
         dispatch(actions.editThing());
-    };
+    }, []);
 
     return (
         <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered onHide={handleHideModal}>
-            <Images images={images} onRemoveImage={handleRemoveImage}></Images>
+            <ListImages images={images} onRemoveImage={handleRemoveImage}></ListImages>
             <Modal.Header>
                 <TextareaAutosize
                     className="col-12 no-border none-resize"

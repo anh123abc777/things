@@ -1,10 +1,8 @@
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
-import { actions, useThing } from '~/hooks';
 import { Box, ListItem, ListItemButton, ListItemIcon, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { actions, useThing } from '~/hooks';
+import * as labelServices from '~/services/labelServices';
 
 const NewLabel = (props) => {
     const [isActiveAddNewLabel, setActiveAddNewLabel] = useState(false);
@@ -21,16 +19,14 @@ const NewLabel = (props) => {
         setActiveAddNewLabel(true);
     };
 
-    const handleInactiveAddNewLabel = (e) => {
+    const handleInactiveAddNewLabel = async (e) => {
         setActiveAddNewLabel(false);
         let newLabel = {
             name: e.target.value,
         };
-        if (newLabel.name.trim() != '') {
-            axios.post('http://localhost:3000/api/v1/labels', newLabel).then((response) => {
-                dispatch(actions.addLabel(response.data));
-                return response.json;
-            });
+        if (newLabel.name) {
+            const res = await labelServices.createLabel(newLabel);
+            dispatch(actions.addLabel(res));
             props.onAddNewLabel(true);
         }
     };

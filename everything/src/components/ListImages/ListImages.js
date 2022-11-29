@@ -1,8 +1,8 @@
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Box, IconButton } from '@mui/material';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
-const Images = (props) => {
+const ListImages = (props) => {
     let [isActived, setIsActived] = useState([]);
 
     const handleOnBlur = (i) => {
@@ -12,7 +12,6 @@ const Images = (props) => {
         console.log(`UnFocus: ${updateActived[i]}`);
     };
 
-    console.log('lo');
     const handleOnFocus = (i) => {
         let updateActived = [...isActived];
         updateActived[i] = true;
@@ -55,4 +54,4 @@ const Images = (props) => {
     );
 };
 
-export default Images;
+export default memo(ListImages);

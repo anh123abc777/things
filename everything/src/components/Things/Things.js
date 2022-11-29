@@ -4,7 +4,7 @@ import { Box, Card, CardActionArea, TextareaAutosize } from '@mui/material';
 import styles from './Things.module.scss';
 import classNames from 'classnames/bind';
 import { actions, useThing } from '~/hooks';
-import Images from '../Images';
+import ListImages from '~/components/ListImages';
 
 const cx = classNames.bind(styles);
 
@@ -27,7 +27,7 @@ function Things() {
                     className={cx('item-context')}
                 >
                     <CardActionArea>
-                        <Images images={thing.images_url} limit={1}></Images>
+                        <ListImages images={thing.images_url} limit={1}></ListImages>
                         <div className="p-2">
                             <h2>{thing.title}</h2>
                             <TextareaAutosize
@@ -46,7 +46,7 @@ function Things() {
                             </div>
                             <Link
                                 overlay
-                                href="#with-card"
+                                href="#"
                                 textColor="inherit"
                                 underline="none"
                                 fontWeight="md"

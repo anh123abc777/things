@@ -5,25 +5,19 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AcUnitSharpIcon from '@mui/icons-material/AcUnitSharp';
 import ReplayIcon from '@mui/icons-material/Replay';
-import { actions, useThing } from '~/hooks';
-import axios from 'axios';
-import { useState } from 'react';
 import Link from '@mui/joy/Link';
+import { actions, useThing } from '~/hooks';
+import * as thingServices from '~/services/thingServices';
 
 const cx = classNames.bind(styles);
-const API_URL = 'http://localhost:3000/api/v1/things/';
 
 const Header = () => {
     const [state, dispatch] = useThing();
 
-    const handleLoadThings = () => {
-        axios
-            .get(API_URL)
-            .then((response) => response.data)
-            .then((items) => {
-                dispatch(actions.filterThingsToLabel({ label: 'publishedLabel' }));
-                dispatch(actions.loadThing(items));
-            });
+    const handleLoadThings = async () => {
+        const res = await thingServices.getAll();
+        dispatch(actions.filterThingsToLabel({ label: 'publishedLabel' }));
+        dispatch(actions.loadThing(res));
     };
 
     const handleSearching = (e) => {

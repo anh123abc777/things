@@ -78,6 +78,6 @@ class Api::V1::ThingsController < ApplicationController
     end
 
     def thing_params
-      params.require(:thing).permit(:title, :body, images: [])
+      params.require(:thing).permit(:title, :body, :status, images: [])
     end
 end

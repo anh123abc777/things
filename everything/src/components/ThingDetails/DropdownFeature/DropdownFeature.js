@@ -1,19 +1,18 @@
-import axios from 'axios';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { actions } from '~/hooks';
-import { useThing } from '~/hooks';
-import { getApiArchiveThingURL } from '~/components/thing/thingUrl';
+import { useThing, actions } from '~/hooks';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import * as thingServices from '~/services/thingServices';
 
 const DropdownFeature = () => {
     const [state, dispatch] = useThing();
     const { selectedThing } = state;
 
-    const handleArchiveThing = () => {
-        axios.put(getApiArchiveThingURL(selectedThing.id)).then((response) => {
-            dispatch(actions.archiveThing(selectedThing));
-            dispatch(actions.closeThing());
-        });
+    const handleArchiveThing = async () => {
+        const formData = { ...selectedThing };
+        formData.status = 'archived';
+        const res = await thingServices.update(selectedThing.id, formData);
+        dispatch(actions.archiveThing(res));
+        dispatch(actions.closeThing());
     };
 
     return (

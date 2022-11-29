@@ -1,21 +1,12 @@
-import axios from 'axios';
 import ArchivedLabel from './ArchivedLabel';
 import NewLabel from './NewLabel';
 import PublishedLabel from './PublishedLabel';
 import LabelIcon from '@mui/icons-material/Label';
-import {
-    Card,
-    CardActionArea,
-    IconButton,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-} from '@mui/material';
+import { IconButton, List, ListItem, ListItemButton, ListItemIcon } from '@mui/material';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { pink } from '@mui/material/colors';
 import { useThing, actions } from '~/hooks';
+import * as labelServices from '~/services/labelServices';
 
 const ListLabel = (props) => {
     const [state, dispatch] = useThing();
@@ -25,8 +16,8 @@ const ListLabel = (props) => {
         props.setIsUpdateLabel(isAddNew);
     };
 
-    const handelRemoveLabel = (labelNeedRemove) => {
-        axios.delete(`http://localhost:3000/api/v1/labels/${labelNeedRemove.id}`).then((response) => response.data);
+    const handelRemoveLabel = async (labelNeedRemove) => {
+        await labelServices.removeLabel(labelNeedRemove.id);
         dispatch(actions.deleteLabel(labelNeedRemove));
     };
 
